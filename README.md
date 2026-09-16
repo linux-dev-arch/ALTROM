@@ -43,5 +43,5 @@ sudo ./mtk_dump connect simple_da payload.bin 0x70008000
 
 ## Credits
 * https://github.com/MediatekInfo/DZ09 - Some of the mt6261 reverse engineered
-* https://github.com/ilyakurdyukov/mediatek_flash - flash tool and loader
+* https://github.com/ilyakurdyukov/mediatek_flash - flash tool and DA loader
 * https://github.com/isogashii/fernly/ - Hardware level reverse engineering OS
