@@ -46,3 +46,4 @@ sudo ./mtk_dump connect simple_da payload.bin 0x70008000
 * https://github.com/MediatekInfo/DZ09 - Some of the mt6261 reverse engineered
 * https://github.com/ilyakurdyukov/mediatek_flash - flash tool and DA loader
 * https://github.com/isogashii/fernly/ - Hardware level reverse engineering OS
+* <a href="https://drive.google.com/file/d/1_u99xIKyY8CJ5ilEQIDJ67I0Cq0AjG8g/view?usp=sharing">reference datasheet</a> [ALTROM does not redistribute the datasheet.]
