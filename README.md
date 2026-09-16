@@ -9,7 +9,7 @@ This is an alternative operating system for the nokia 130 music (MT6261).
 * Reboot by using watchdog timer reset.
  
 ##  What Does It DO?
-* Rn the Payload boots up and toggles the keypad backlight using the LEFT and RIGHT keys
+* The Payload boots up and toggles the keypad backlight using the LEFT and RIGHT keys
 * Reboots when # key is pressed.
 * Powers off when usb cable is disconnected.
 
