@@ -18,6 +18,7 @@ This is an alternative operating system for the nokia 130 music (MT6261).
 * Download payload.bin from <a href="https://github.com/linux-dev-arch/ALTROM/releases">releases</a> or build it using <a href=https://github.com/linux-dev-arch/ALTROM#how-to-run>build instructions</a>.
 * Download mediatek-flash tool from <a href="https://github.com/ilyakurdyukov/mediatek_flash">here</a>.
 * Copy the payload.bin file to the top folder of the flash tool repo
+* Poweroff the phone and plug it in while holding the * key.
 * run the following command
 ```
 sudo ./mtk_dump connect simple_da payload.bin 0x70008000
