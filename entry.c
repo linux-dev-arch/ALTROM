@@ -1,25 +1,16 @@
 #include <stdint.h>
-#include "defines.c"
+#include "defines.h"
 #include "init_hw.c"
 #include "helpers.c"
-int entry_main(void)
-{	keypad_mux_init();
-	int bkl_state=0;
+#include "apps.c"
+
+void entry_main(void)
+{	init();
+
 	for(;;){
-		if((KP_LEFT)==0){
-			bkl_state=1;
-		}
-		if(KP_HASH==0){
-			reboot();
-		}
-		if((KP_RIGHT) == 0){
-			bkl_state=0;
-		}
-		if(bkl_state == 1){
-			keypad_backlight=3;
-		}
-		else{
-			keypad_backlight=0;
-		}
+		kp_blink(100000);
+		kp_toggle();
+		psram_test();
 	}
+
 }
