@@ -5,11 +5,13 @@ This is an alternative operating system for the nokia 130 music (MT6261).
 * Custom Code execution.
 * Bootup from download agent payload.
 * Keypad and Keypad backlights.
+* 4MB of internal PSRAM! (cool stuff :D)
 * runs completely from ram!.
 * Reboot by using watchdog timer reset.
  
 ##  What Does It DO?
-* The Payload boots up and toggles the keypad backlight using the LEFT and RIGHT keys
+* The Payload boots up and blinks the keypad backlight at regular intervals.
+* toggle the keypad backlight using the D pad up  and D pad down keys ,cycles the apps using left and right keys.
 * Reboots when # key is pressed.
 * Powers off when usb cable is disconnected.
 
@@ -23,7 +25,7 @@ This is an alternative operating system for the nokia 130 music (MT6261).
 ```
 sudo ./mtk_dump connect simple_da payload.bin 0x70008000
 ```
-* Once it loads, you can toggle the Keypad backlight using the LEFT and RIGHT keys.
+* Once it loads, the keypad will start blinking.you can cycle thorough available apps.(blinky,toggle,psram test)
 
 ## How To Build From Source
 * Download this Github Repo.
@@ -41,6 +43,7 @@ sudo ./mtk_dump connect simple_da payload.bin 0x70008000
 
 ## Supported devices
 * Nokia 130 music (TA-1576)
+* Any feature phone with MT6261 chipset (might require custom drivers).
 
 ## Credits
 * https://github.com/MediatekInfo/DZ09 - Some of the mt6261 reverse engineered
