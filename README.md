@@ -25,7 +25,8 @@ This is an alternative operating system for the nokia 130 music (MT6261).
 ```
 sudo ./mtk_dump connect simple_da payload.bin 0x70008000
 ```
-* Once it loads, the keypad will start blinking.you can cycle thorough available apps.(blinky,toggle,psram test)
+* Once it loads, the keypad will start blinking.
+* you can cycle thorough available apps.(blinky,toggle,psram test)
 
 ## How To Build From Source
 * Download this Github Repo.
