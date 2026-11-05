@@ -14,11 +14,11 @@ This is an alternative operating system for the nokia 130 music (MT6261).
 * The Payload boots up and blinks the keypad backlight at regular intervals.
 * toggle the keypad backlight using the D pad up  and D pad down keys ,cycles the apps using left and right keys.
 * Reboots when # key is pressed.
-* Powers off when usb cable is disconnected.
+* Powers off when USB cable is disconnected.
 
 ## How to Run?
-* A gnu/linux based operating system.
-* Download payload.bin from <a href="https://github.com/linux-dev-arch/ALTROM/releases">releases</a> or build it using <a href=https://github.com/linux-dev-arch/ALTROM#how-to-run>build instructions</a>.
+* You will need a gnu/linux based operating system.
+* Download altrom.bin from <a href="https://github.com/linux-dev-arch/ALTROM/releases">releases</a> or build it using <a href=https://github.com/linux-dev-arch/ALTROM#how-to-run>build instructions</a>.
 * Download mediatek-flash tool from <a href="https://github.com/ilyakurdyukov/mediatek_flash">here</a>.
 * Copy the altrom.bin file to the top folder of the flash tool repo
 * Poweroff the phone and plug it in while holding the * key.
