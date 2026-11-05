@@ -6,7 +6,7 @@ void keypad_mux_init(){
 void init(void){
         // Disable the digital watchdogs
         WDT_CTRL = WDT_DISABLE;
-        PMIC_CTRL9 = 0x2;
+        PMIC_CTRL9 = 0x8;
 	PMU_DisableUSBDLMode();
         PMU_SetChargerWDTEnabled(0);
 	keypad_mux_init();

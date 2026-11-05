@@ -1,62 +1,101 @@
+
+# ==========================================
+# AltROM Build System
+# Toolchain: Clang / LLVM
+# Target: ARMv5TE (Thumb)
+# ==========================================
+
 OBJDIR = obj
 SRCS = start entry
 OBJS = $(SRCS:%=$(OBJDIR)/%.o)
+
+NAME = altrom
 LDSCRIPT = simple.ld
-NAME = payload
+LOAD_ADDR = 0x70008000
+# Toolchain
+CC = clang --target=arm-none-eabi
+OBJCOPY = llvm-objcopy
+OBJDUMP = llvm-objdump
+SIZE = llvm-size
 
-ifdef TOOLCHAIN
-CC = "$(TOOLCHAIN)"-gcc
-OBJCOPY = "$(TOOLCHAIN)"-objcopy
+# Compiler flags
+CFLAGS = -Oz -Wall \
+         -ffreestanding \
+         -fPIE \
+         -march=armv5te \
+         -mthumb \
+         -fno-strict-aliasing \
+         $(EXTRA_CFLAGS)
+
+# Assembly flags
+ASFLAGS = -march=armv5te -mthumb
+
+# Linker flags
+LFLAGS = -nostdlib \
+         -fuse-ld=lld \
+         -Wl,-T,$(LDSCRIPT) \
+         -Wl,-z,notext
+
+# Optional Link-Time Optimization
+ifeq ($(LTO),1)
+    CFLAGS += -flto
+    LFLAGS += -flto
 endif
 
-COMPILER = $(findstring clang,$(notdir $(CC)))
-ifeq ($(COMPILER), clang)
-# Clang
-CFLAGS = -Oz
-else
-# GCC
-CFLAGS = -Os
-endif
-
-CFLAGS += -Wall -fPIE -ffreestanding -march=armv5te -mthumb $(EXTRA_CFLAGS) -fno-strict-aliasing
-LFLAGS = -nostartfiles -nodefaultlibs -nostdlib -Wl,-T,$(LDSCRIPT) -Wl,-z,notext
-
-# Clang's LTO doesn't work with the GCC toolchain
-ifeq ($(findstring -gcc-toolchain,$(notdir $(CC))),)
-CFLAGS += -flto
-endif
-
+# Optional sysroot
 ifdef SYSROOT
-CFLAGS += --sysroot="$(SYSROOT)"
+    CFLAGS += --sysroot="$(SYSROOT)"
+    LFLAGS += --sysroot="$(SYSROOT)"
 endif
 
-.PHONY: all clean
+# ==========================================
+# Targets
+# ==========================================
+
+.PHONY: all clean rebuild size disasm
 
 all: $(NAME).bin
 
-clean:
-	$(RM) -r $(OBJDIR) $(NAME).bin
-
+# Create object directory
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
+# Include dependency files
 -include $(OBJS:.o=.d)
 
-%.asm: %.c
-	$(CC) $(CFLAGS) $< -S -o $@
-
+# Compile C
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -MMD -MP -MF $(@:.o=.d) $< -c -o $@
 
+# Compile assembly
 $(OBJDIR)/%.o: %.s | $(OBJDIR)
-	$(CC) $< -c -o $@
+	$(CC) $(ASFLAGS) $< -c -o $@
 
 $(OBJDIR)/%.o: %.S | $(OBJDIR)
-	$(CC) $< -c -o $@
+	$(CC) $(ASFLAGS) $< -c -o $@
 
+# Link ELF
 $(OBJDIR)/$(NAME).elf: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $@
 
-%.bin: $(OBJDIR)/%.elf
+# Generate binary
+$(NAME).bin: $(OBJDIR)/$(NAME).elf
 	$(OBJCOPY) -O binary -R .bss $< $@
 
+# Clean
+clean:
+	$(RM) -r $(OBJDIR) $(NAME).bin $(NAME).asm
+
+# Rebuild
+rebuild: clean all
+
+# Display binary size
+size: $(OBJDIR)/$(NAME).elf
+	$(SIZE) $<
+
+# Generate disassembly
+disasm: $(OBJDIR)/$(NAME).elf
+	$(OBJDUMP) -d $< > $(NAME).asm
+
+run: $(NAME).bin
+	sudo ../mtk_dump connect simple_da $(NAME).bin $(LOAD_ADDR)

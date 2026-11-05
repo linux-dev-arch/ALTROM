@@ -242,6 +242,181 @@
 
 #define EMI_CTRL_REMAP (0xA0510000)
 //end of EMI
+
+//LCDIF - taken fro DZO9 project
+#define LCDIF_STA                   (*(volatile uint16_t *)(LCDIF_BASE + 0x0000))
+#define LCDIF_RUNNING               (1 << 0)
+#define LCDIF_WAIT_CMDQ             (1 << 1)
+#define LCDIF_WAIT_HTT              (1 << 3)
+#define LCDIF_TE_PEND               (1 << 4)
+#define LCDIF_BUSY                  (1 << 5)
+#define LCDIF_GMC                   (1 << 6)
+#define LCDIF_INTEN                 (*(volatile uint16_t *)(LCDIF_BASE + 0x0004))
+#define LCDIF_CPL                   (1 << 0)
+#define LCDIF_REG_CPL               (1 << 1)
+#define LCDIF_CMDQ_CPL              (1 << 2)
+#define LCDIF_HTT                   (1 << 4)
+#define LCDIF_SYNC                  (1 << 5)
+#define LCDIF_INTSTA                (*(volatile uint16_t *)(LCDIF_BASE + 0x0008))
+#define LCDIF_CPL                   (1 << 0)
+#define LCDIF_START                 (*(volatile uint16_t *)(LCDIF_BASE + 0x000C))
+#define LCDIF_INT_RESET             (1 << 0)
+#define LCDIF_RUN                   (1 << 15)
+#define LCDIF_RSTB                  (*(volatile uint16_t *)(LCDIF_BASE + 0x0010))
+#define LCDIF_RESET1                (1 << 0)
+#define LCDIF_RESET0                (0 << 0)
+#define LCDIF_SIF_PIX_CON_REG       (*(volatile uint32_t *)(LCDIF_BASE + 0x0018))
+
+#define LCDIF_SIF0_TIMING           (*(volatile uint32_t *)(LCDIF_BASE + 0x001C))
+#define LCDIF_WR_2ND(v)             (((v) & 0x000F) << 0)
+#define LCDIF_WR_1ST(v)             (((v) & 0x000F) << 4)
+#define LCDIF_RD_2ND(v)             (((v) & 0x000F) << 8)
+#define LCDIF_RD_1ST(v)             (((v) & 0x000F) << 12)
+#define LCDIF_CSH(v)                (((v) & 0x000F) << 16)
+#define LCDIF_CSS(v)                (((v) & 0x000F) << 20)
+#define LCDIF_SIF1_TIMING           (*(volatile uint32_t *)(LCDIF_BASE + 0x0020))
+#define LCDIF_WR_2ND(v)             (((v) & 0x000F) << 0)
+#define LCDIF_WR_1ST(v)             (((v) & 0x000F) << 4)
+#define LCDIF_RD_2ND(v)             (((v) & 0x000F) << 8)
+#define LCDIF_RD_1ST(v)             (((v) & 0x000F) << 12)
+#define LCDIF_CSH(v)                (((v) & 0x000F) << 16)
+#define LCDIF_CSS(v)                (((v) & 0x000F) << 20)
+#define LCDIF_SIF_CON               (*(volatile uint32_t *)(LCDIF_BASE + 0x0028))
+#define LCDIF_SIF0_SIZE8B           (0 << 0)
+#define LCDIF_SIF0_SIZE9B           (1 << 0)
+#define LCDIF_SIF0_SIZE16B          (2 << 0)
+#define LCDIF_SIF0_SIZE18B          (3 << 0)
+#define LCDIF_SIF0_SIZE24B          (4 << 0)
+#define LCDIF_SIF0_SIZE32B          (5 << 0)
+#define LCDIF_SIF0_4WIRE            (0 << 3)
+#define LCDIF_SIF0_3WIRE            (1 << 3)
+#define LCDIF_SIF0_SDI              (1 << 4)
+#define LCDIF_SIF0_1ST_POL          (1 << 5)
+#define LCDIF_SIF0_SCK_DEF          (1 << 6)
+#define LCDIF_SIF0_DIV2             (1 << 7)
+#define LCDIF_SIF1_SIZE8B           (0 << 8)
+#define LCDIF_SIF1_SIZE9B           (1 << 8)
+#define LCDIF_SIF1_SIZE16B          (2 << 8)
+#define LCDIF_SIF1_SIZE18B          (3 << 8)
+#define LCDIF_SIF1_SIZE24B          (4 << 8)
+#define LCDIF_SIF1_SIZE32B          (5 << 8)
+#define LCDIF_SIF1_4WIRE            (0 << 11)
+#define LCDIF_SIF1_3WIRE            (1 << 11)
+#define LCDIF_SIF1_SDI              (1 << 12)
+#define LCDIF_SIF1_1ST_POL          (1 << 13)
+#define LCDIF_SIF1_SCK_DEF          (1 << 14)
+#define LCDIF_SIF1_DIV2             (1 << 15)
+#define LCDIF_SIF0_HW_CS            (1 << 24)
+#define LCDIF_SIF1_HW_CS            (1 << 28)                                                       // Not checked
+#define LCDIF_SIF_CS                (*(volatile uint32_t *)(LCDIF_BASE + 0x002C))
+#define LCDIF_CS0                   (1 << 0)
+#define LCDIF_CS1                   (1 << 1)
+#define LCDIF_PCNF0                 (*(volatile uint32_t *)(LCDIF_BASE + 0x0030))
+#define LCDIF_WST(v)                (((v) & 0x003F) << 0)
+#define LCDIF_C2WS(v)               (((v) & 0x000F) << 8)
+#define LCDIF_C2WH(v)               (((v) & 0x000F) << 12)
+#define LCDIF_RLT(v)                (((v) & 0x003F) << 16)
+#define LCDIF_C2RS(v)               (((v) & 0x000F) << 24)
+#define LCDIF_C2RH(v)               (((v) & 0x000F) << 28)
+#define LCDIF_PCNF1                 (*(volatile uint32_t *)(LCDIF_BASE + 0x0034))
+#define LCDIF_WST(v)                (((v) & 0x003F) << 0)
+#define LCDIF_C2WS(v)               (((v) & 0x000F) << 8)
+#define LCDIF_C2WH(v)               (((v) & 0x000F) << 12)
+#define LCDIF_RLT(v)                (((v) & 0x003F) << 16)
+#define LCDIF_C2RS(v)               (((v) & 0x000F) << 24)
+#define LCDIF_C2RH(v)               (((v) & 0x000F) << 28)
+#define LCDIF_PDW                   (*(volatile uint32_t *)(LCDIF_BASE + 0x003C))
+#define LCDIF_P0_DW(v)              (((v) & 0x0007) << 0)
+#define LCDIF_P1_DW(v)              (((v) & 0x0007) << 4)
+#define LCDIF_PDW_8B                0
+#define LCDIF_PDW_9B                1
+#define LCDIF_PDW_16B               2
+#define LCDIF_PDW_18B               3
+#define LCDIF_P0_CHW(v)             (((v) & 0x000F) << 16)
+#define LCDIF_P1_CHW(v)             (((v) & 0x000F) << 20)
+#define LCDIF_CALC_HTT              (*(volatile uint32_t *)(LCDIF_BASE + 0x0044))
+#define LCDIF_TIMEOUT(v)            (((v) & 0x0FFF) << 0)
+#define LCDIF_COUNT(v)              (((v) & 0x0FFF) << 16)
+#define LCDIF_SYNC_LCM_SIZE         (*(volatile uint32_t *)(LCDIF_BASE + 0x0048))
+#define LCDIF_HTTSZ(v)              (((v) & 0x03FF) << 0)
+#define LCDIF_VTTSZ(v)              (((v) & 0x0FFF) << 16)
+#define LCDIF_SYNC_CNT              (*(volatile uint32_t *)(LCDIF_BASE + 0x004C))
+#define LCDIF_WAITLINE(v)           (((v) & 0x0FFF) << 0)
+#define LCDIF_SCANLINE(v)           (((v) & 0x0FFF) << 16)
+#define LCDIF_TECON                 (*(volatile uint32_t *)(LCDIF_BASE + 0x0050))
+#define LCDIF_SYNC_EN               (1 << 0)
+#define LCDIF_TE_EDGE_SEL           (1 << 1)
+#define LCDIF_SYNC_MODE             (1 << 2)
+#define LCDIF_TE_REPEAT             (1 << 3)
+#define LCDIF_SW_TE                 (1 << 15)
+#define LCDIF_GMCCON                (*(volatile uint32_t *)(LCDIF_BASE + 0x0054))
+#define LCDIF_MAX_BURST(v)          (((v) & 0x0007) << 0)
+#define LCDIF_MB_4B                 0
+#define LCDIF_MB_16B                2
+#define LCDIF_MB_32B                3
+#define LCDIF_MB_64B                4
+#define LCDIF_TROTTLE_EN            (1 << 4)
+#define LCDIF_TROTTLE_PERIOD(v)     (((v) & 0xFFFF) << 16)
+
+#define LCDIF_WROICON               (*(volatile uint32_t *)(LCDIF_BASE + 0x0080))
+#define LCDIF_F_BGR                 (0 << 0)
+#define LCDIF_F_RGB                 (1 << 0)
+#define LCDIF_F_SIGNIF              (1 << 1)
+#define LCDIF_F_PADDLSB             (0 << 2)
+#define LCDIF_F_PADDMSB             (1 << 2)
+#define LCDIF_F_RGB332              (0 << 3)
+#define LCDIF_F_RGB444              (1 << 3)
+#define LCDIF_F_RGB565              (2 << 3)
+#define LCDIF_F_RGB666              (3 << 3)
+#define LCDIF_F_RGB888              (4 << 3)
+#define LCDIF_F_ITF_8B              (0 << 6)
+#define LCDIF_F_ITF_16B             (1 << 6)
+#define LCDIF_F_ITF_9B              (2 << 6)
+#define LCDIF_F_ITF_18B             (3 << 6)
+#define LCDIF_COMMAND(v)            (((v) & 0x003F) << 8)
+#define LCDIF_MAXCOMMANDS           64
+#define LCDIF_COMMAND_MASK          ((LCDIF_MAXCOMMANDS - 1) << 8)
+#define LCDIF_W2M                   (1 << 14)
+#define LCDIF_ENC                   (1 << 15)
+#define LCDIF_PERIOD(v)             (((v) & 0x00FF) << 16)
+#define LCDIF_SEND_RES_MODE         (1 << 24)
+#define LCDIF_FCNT                  (1 << 26)
+#define LCDIF_L3EN                  (1 << 28)
+#define LCDIF_L2EN                  (1 << 29)
+#define LCDIF_L1EN                  (1 << 30)
+#define LCDIF_L0EN                  (1UL << 31)
+#define LCDIF_WROIOFS               (*(volatile uint32_t *)(LCDIF_BASE + 0x0084))
+#define LCDIF_WROIOFX(v)            (((v) & 0x03FF) << 0)
+#define LCDIF_WROIOFY(v)            (((v) & 0x03FF) << 16)
+#define LCDIF_WROICADD              (*(volatile uint32_t *)(LCDIF_BASE + 0x0088))
+#define LCDIF_CPIF0                 (0x00 << 4)
+#define LCDIF_CPIF1                 (0x02 << 4)
+#define LCDIF_CSIF0                 (0x08 << 4)
+#define LCDIF_CSIF1                 (0x0A << 4)
+#define LCDIF_WROIDADD              (*(volatile uint32_t *)(LCDIF_BASE + 0x008C))
+#define LCDIF_DPIF0                 (0x01 << 4)
+#define LCDIF_DPIF1                 (0x03 << 4)
+#define LCDIF_DSIF0                 (0x09 << 4)
+#define LCDIF_DSIF1                 (0x0B << 4)
+#define LCDIF_WROISIZE              (*(volatile uint32_t *)(LCDIF_BASE + 0x0090))
+#define LCDIF_WROICOL(v)            (((v) & 0x07FF) << 0)
+#define LCDIF_WROIROW(v)            (((v) & 0x07FF) << 16)
+#define LCDIF_WROI_BGCLR            (*(volatile uint32_t *)(LCDIF_BASE + 0x009C))
+//end of LCDIF
+//backlight
+#define ISINKS_CON0                 (*(volatile uint16_t *)(PMU_BASE + 0x0C00))
+#define ISINKS_MODE_SINK            (1 << 0)
+#define ISINK0_CON0                 (*(volatile uint16_t *)(PMU_BASE + 0x0C10))
+#define NI_ISINKS_CH0_EN            (1 << 0)
+#define NI_ISINKS_BIAS0_EN          (1 << 3)
+#define ISINKS_CH0_4mA              0
+#define ISINKS_CH0_8mA              1
+#define ISINKS_CH0_12mA             2
+#define ISINKS_CH0_16mA             3
+#define ISINKS_CH0_20mA             6
+#define ISINKS_CH0_24mA             7
+//end of backlight
+#include "usb.h"
 //funcs
 extern void PMU_DisableUSBDLMode(void);
 void PMU_SetChargerWDTEnabled(int Enabled);
@@ -258,4 +433,6 @@ uint32_t read_32(uint32_t addr);
 uint16_t read_16(uint32_t addr);
 void set_plls(void);
 void enable_psram(void);
+void jump(uint32_t addr); //Jumps to addr
+void backlight(uint16_t level);
 #endif

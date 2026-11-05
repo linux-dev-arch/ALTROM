@@ -10,6 +10,11 @@ void sleep(unsigned int clk)
             __asm__ volatile ("nop");
     }
 }
+
+void jump(uint32_t addr){
+	((void (*)(void))addr)();
+}
+
 void PMU_DisableUSBDLMode(void)
 {
     STRUP_CON0 &= ~RG_USBDL_EN;
@@ -70,4 +75,9 @@ void write_32_masked(uint32_t addr, uint32_t value, uint32_t mask)
     tmp |= value & mask;
 
     write_32(addr, tmp);
+}
+void backlight(uint16_t level){
+	//level can be set from 0 - 7 where 7 is max brightness.
+	ISINKS_CON0 |= 0x0001;
+	ISINK0_CON0 |= ((level << 4) +0x9);
 }
