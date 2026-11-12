@@ -5,10 +5,11 @@
  *
  * The buffer lives in PSRAM, NOT in a C array: the 8 KB image limit in
  * simple.ld counts .bss, so a 150 KB array would overflow it.
- * 0x00100000 is clear of psram_test(), which only touches the first 12 bytes.
+ * 0x003DA800 is clear of psram_test(), which only touches the first 12 bytes.
  */
 
-#define FB_ADDR   0x00100000
+//#define FB_ADDR   0x00100000
+#define FB_ADDR   0x003DA800
 #define FB        ((volatile uint16_t *)FB_ADDR)
 
 /* 8-bit r,g,b -> RGB565 */
@@ -19,7 +20,10 @@
 #define COL_RED   0xF800
 #define COL_GREEN 0x07E0
 #define COL_BLUE  0x001F
-
+#define COL_YELLOW 0xffc0
+#define COL_VIOLET 0xa816
+#define COL_CYAN 0x07ff
+#define COL_TEAL 0x07f3
 /* set the panel's RAM write window and start a RAMWR */
 static void lcd_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 {
@@ -85,4 +89,26 @@ void lcd_pixel(int x, int y, uint16_t color)
 	lcd_window(x, y, x, y);
 	lcd_dat(color >> 8);
 	lcd_dat(color & 0xFF);
+}
+void fb_rect(int x, int y, int width, int height, uint16_t color)
+{
+    for (int py = 0; py < height; py++) {
+        for (int px = 0; px < width; px++) {
+            fb_pixel(x + px, y + py, color);
+        }
+    }
+}
+
+void fb_rect_outline(int x, int y, int width, int height,
+                     uint16_t color)
+{
+    for (int px = 0; px < width; px++) {
+        fb_pixel(x + px, y, color);
+        fb_pixel(x + px, y + height - 1, color);
+    }
+
+    for (int py = 0; py < height; py++) {
+        fb_pixel(x, y + py, color);
+        fb_pixel(x + width - 1, y + py, color);
+    }
 }

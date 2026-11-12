@@ -5,20 +5,34 @@
 # Target: ARMv5TE (Thumb)
 # ==========================================
 
-OBJDIR = obj
-SRCS = start entry
+# Program name / main source file
+NAME ?= altrom
+
+# Directories
+OBJDIR = obj/$(NAME)
+
+# Source files
+SRCS = start $(NAME)
 OBJS = $(SRCS:%=$(OBJDIR)/%.o)
 
-NAME = altrom
-LDSCRIPT = simple.ld
-LOAD_ADDR = 0x70008000
+# Output files
+ELF = $(OBJDIR)/$(NAME).elf
+BIN = $(NAME).bin
+ASM = $(NAME).asm
+
+LDSCRIPT ?= simple.ld
+LOAD_ADDR = 0x70000000
+
 # Toolchain
 CC = clang --target=arm-none-eabi
 OBJCOPY = llvm-objcopy
 OBJDUMP = llvm-objdump
 SIZE = llvm-size
 
+# ==========================================
 # Compiler flags
+# ==========================================
+
 CFLAGS = -Oz -Wall \
          -ffreestanding \
          -fPIE \
@@ -52,9 +66,9 @@ endif
 # Targets
 # ==========================================
 
-.PHONY: all clean rebuild size disasm
+.PHONY: all clean rebuild size disasm run
 
-all: $(NAME).bin
+all: $(BIN)
 
 # Create object directory
 $(OBJDIR):
@@ -63,39 +77,72 @@ $(OBJDIR):
 # Include dependency files
 -include $(OBJS:.o=.d)
 
+# ==========================================
 # Compile C
+# ==========================================
+
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -MMD -MP -MF $(@:.o=.d) $< -c -o $@
 
+# ==========================================
 # Compile assembly
+# ==========================================
+
 $(OBJDIR)/%.o: %.s | $(OBJDIR)
 	$(CC) $(ASFLAGS) $< -c -o $@
 
 $(OBJDIR)/%.o: %.S | $(OBJDIR)
 	$(CC) $(ASFLAGS) $< -c -o $@
 
+# ==========================================
 # Link ELF
-$(OBJDIR)/$(NAME).elf: $(OBJS)
+# ==========================================
+
+$(ELF): $(OBJS) $(LDSCRIPT)
 	$(CC) $(LFLAGS) $(OBJS) -o $@
 
+# ==========================================
 # Generate binary
-$(NAME).bin: $(OBJDIR)/$(NAME).elf
+# ==========================================
+
+$(BIN): $(ELF)
 	$(OBJCOPY) -O binary -R .bss $< $@
 
+# ==========================================
 # Clean
+# ==========================================
+
 clean:
-	$(RM) -r $(OBJDIR) $(NAME).bin $(NAME).asm
+	$(RM) -r obj
+	$(RM) *.bin *.asm
 
+# ==========================================
 # Rebuild
-rebuild: clean all
+# ==========================================
 
+rebuild:
+	$(MAKE) NAME=$(NAME) clean
+	$(MAKE) NAME=$(NAME) all
+
+# ==========================================
 # Display binary size
-size: $(OBJDIR)/$(NAME).elf
+# ==========================================
+
+size: $(ELF)
 	$(SIZE) $<
 
-# Generate disassembly
-disasm: $(OBJDIR)/$(NAME).elf
-	$(OBJDUMP) -d $< > $(NAME).asm
+# ==========================================
+# Disassembly
+# ==========================================
 
-run: $(NAME).bin
-	sudo ../mtk_dump connect simple_da $(NAME).bin $(LOAD_ADDR)
+disasm: $(ELF)
+	$(OBJDUMP) -d $< > $(ASM)
+
+# ==========================================
+# Run on device
+# ==========================================
+
+run: $(BIN)
+	sudo ../mtk_dump connect simple_da payload.bin 0x70008000
+	sudo ../mtk_dump connect simple_da $(BIN) $(LOAD_ADDR)
+

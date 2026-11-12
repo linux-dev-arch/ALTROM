@@ -420,11 +420,72 @@ void draw_int(int x, int y, int value,
     buf[i] = '\0';
 
     // Reverse
-    for (int a = 0, b = i - 1; a < b; a++, b--) {
+    /*for (int a = 0, b = i - 1; a < b; a++, b--) {
         char t = buf[a];
         buf[a] = buf[b];
         buf[b] = t;
+    }*/
+
+    draw_string12(x, y, buf, fg, bg, 1, 0);
+}
+
+
+
+void draw_int8(int x, int y, int value,
+              uint16_t fg, uint16_t bg)
+{
+    char buf[12];
+    int i = 0;
+    unsigned int n;
+    int negative = 0;
+
+    if (value < 0) {
+        negative = 1;
+        n = (unsigned int)(-(value + 1)) + 1;
+    } else {
+        n = (unsigned int)value;
     }
+
+    static const unsigned int powers[] = {
+        1000000000u,
+        100000000u,
+        10000000u,
+        1000000u,
+        100000u,
+        10000u,
+        1000u,
+        100u,
+        10u,
+        1u
+    };
+
+    int started = 0;
+
+    for (int p = 0; p < 10; p++) {
+        unsigned int digit = 0;
+
+        while (n >= powers[p]) {
+            n -= powers[p];
+            digit++;
+        }
+
+        if (digit || started || p == 9) {
+            buf[i++] = '0' + digit;
+            started = 1;
+        }
+    }
+
+    if (negative)
+        buf[i++] = '-';
+
+    buf[i] = '\0';
+
+    // Reverse
+    /*for (int a = 0, b = i - 1; a < b; a++, b--) {
+        char t = buf[a];
+        buf[a] = buf[b];
+        buf[b] = t;
+    }*/
 
     draw_string8(x, y, buf, fg, bg, 1, 0);
 }

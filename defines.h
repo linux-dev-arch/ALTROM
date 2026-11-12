@@ -26,6 +26,7 @@
 #define KP_CENTER_DOWN ((KP_MEM4)&0x1)
 #define KP_CENTER_LEFT ((KP_MEM4 >> 3)&0x1)
 #define KP_CENTER_RIGHT ((KP_MEM4 >> 6)&0x1)
+#define KP_0 ((KP_MEM1>>12)&0x1)
 #define KP_1 ((KP_MEM1 >> 15)&0x1)
 #define KP_2 ((KP_MEM2 >> 2)&0x1)
 #define KP_3 ((KP_MEM2 >> 5)&0x1)

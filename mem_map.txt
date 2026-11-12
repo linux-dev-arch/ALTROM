@@ -1,0 +1,9 @@
+	******************
+	ALTROM MEMORY MAP
+	******************
+0x00000000-0x003FFFFF builtin psram
+0x00000000-0x003DA1FF free space for stuff
+0x003DA200-0x003DA3FF fat file-data sector
+0x003DA400-0x003DA5FF fat directory sector cache
+0x003DA600-0x003DA7FF sdcard sector buffer/fat table sector cache
+0x003DA800-0x003FFFFF display buffer

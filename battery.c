@@ -165,7 +165,7 @@ static void draw_number(int x, int y, uint32_t n, int s, uint16_t c)
 void battery_app(void)
 {
 	battery_init();
-	/* charger_start();   <- uncomment to also charge (read the warning above) */
+	charger_start();//   <- uncomment to also charge (read the warning above) */
 
 	for (;;) {
 		uint32_t mv  = battery_read_mv();

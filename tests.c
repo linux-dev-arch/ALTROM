@@ -24,9 +24,7 @@ volatile uint32_t *psram = (volatile uint32_t *)0x00000000;
 		sleep(100000);
 	}
 	else{
-		fb_clear(COL_BLACK);
-		draw_string8(10, 120, "PSRAM TEST FAILED",COL_BLACK,COL_GREEN, 0, 2);
-		fb_flush();
+		kp_blink(100000);
 		for(;;){}
 }
 }
