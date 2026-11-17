@@ -7,7 +7,7 @@
 
 # Program name / main source file
 NAME ?= altrom
-
+code = "bins/hello.bin"
 # Directories
 OBJDIR = obj/$(NAME)
 
@@ -143,6 +143,14 @@ disasm: $(ELF)
 # ==========================================
 
 run: $(BIN)
-	sudo ../mtk_dump connect simple_da payload.bin 0x70008000
+	sudo ../mtk_dump connect simple_da bins/payload.bin 0x70008000
+	echo "Uploading OS in 3 seconds"
+	sleep 3
 	sudo ../mtk_dump connect simple_da $(BIN) $(LOAD_ADDR)
 
+send_psram:
+	sudo ../mtk_dump connect simple_da bins/payload.bin 0x70009000
+	sudo ../mtk_dump connect send_da $(code) 0 0
+	sudo ../mtk_dump jump_da 0x70000000
+make_sd_loader_arr:
+	xxd -i sd_loader.bin > sd_loader_blob.h

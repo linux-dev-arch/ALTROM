@@ -1,14 +1,3 @@
-void kp_blink(uint32_t cycles){
-	for(;;){
-		KP_BL_set(KP_BL_ON);
-		sleep(cycles);
-		KP_BL_set(KP_BL_OFF);
-		sleep(cycles);
-		if(KP_OK==0){
-			break;
-		}
-	}
-}
 void psram_test(){
 volatile uint32_t *psram = (volatile uint32_t *)0x00000000;
 	psram[0] = 0x12345678;

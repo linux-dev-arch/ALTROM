@@ -15,7 +15,7 @@ const char *app_names[] = {
     "snake",
     "calculator",
     "file manager",
-    "execute app"
+    "execute app",
 };
 
 void (*apps[])(void) = {
@@ -23,20 +23,23 @@ void (*apps[])(void) = {
     snake,//snake
     calc,//calc
     file_mgr,
-    exec_app
+    exec_app,
 };
 
 void draw_bat_status(void){
 	uint32_t mv  = battery_read_mv();
+	int per = battery_percent(mv);
         int chg = charger_connected();
 	if(!chg){
                 draw_int8(10,300,mv,MENU_COL,BG_COL);
                 draw_string8(50, 300, "mv",MENU_COL,BG_COL, 0, 2);
-                charger_stop();
+		draw_int8(80,300,per,MENU_COL,BG_COL);
+		charger_stop();
         }
         else{
                 draw_int8(10,300,mv,COL_BLUE,BG_COL);
                 draw_string8(50, 300, "mv",COL_BLUE,BG_COL, 0, 2);
+		draw_int8(80,300,per,COL_BLUE,BG_COL);
                 charger_start();
 	}
 
@@ -96,7 +99,7 @@ void menu(void){
 	draw_string12(10, 50, "APPLICATIONS",MENU_COL,BG_COL, 0, 2);
 	draw_string12(10, 70, "SETTINGS",MENU_COL,BG_COL, 0, 2);
 	draw_string12(10, 90, "ABOUT",MENU_COL,BG_COL, 0, 2);
-	draw_string12(10, 110, "REBOOT",MENU_COL,BG_COL, 0, 2);
+	draw_string12(10, 110, "POWEROFF",MENU_COL,BG_COL, 0, 2);
 	fb_flush();
 	KP_BL=KP_BL_ON;
 	for(;;){
@@ -106,7 +109,7 @@ void menu(void){
 		draw_string12(10, 50, "APPLICATION",MENU_COL,BG_COL, 0, 2);
         	draw_string12(10, 70, "SETTINGS",MENU_COL,BG_COL, 0,2);
         	draw_string12(10, 90, "ABOUT",MENU_COL,BG_COL, 0, 2);
-        	draw_string12(10, 110, "REBOOT",MENU_COL,BG_COL, 0, 2);
+        	draw_string12(10, 110, "POWEROFF",MENU_COL,BG_COL, 0, 2);
 		draw_bat_status();
 		if(KP_HASH == 0){
 			fb_clear(BG_COL);
@@ -157,10 +160,9 @@ void menu(void){
 			}
 			if(sel==3){
 				fb_clear(BG_COL);
-				draw_string12(10, 10,"Rebooting...",MENU_COL,BG_COL,0,5);
+				draw_string12(10, 10,"Powering OFF...",MENU_COL,BG_COL,0,5);
 				fb_flush();
-				sleep(100000);
-				reboot();
+				for(;;){}
 			}
 		}
 		if(sel==0){
@@ -173,7 +175,7 @@ void menu(void){
 			draw_string12(10, 90, "ABOUT",BG_COL,MENU_COL, 0, 3);
 		}
 		if(sel == 3){
-			draw_string12(10, 110, "REBOOT",BG_COL,MENU_COL, 0, 3);
+			draw_string12(10, 110, "POWEROFF",BG_COL,MENU_COL, 0, 3);
 		}
 		fb_flush();
 	}

@@ -46,3 +46,17 @@ void Force_Battery_Power_Hold(void)
     REG_RTC_BBPU = KEY_BBPU | AUTO | ((REG_RTC_BBPU | BBPU | PWREN) & 0xFF);
     Inline_RTC_UpdateContext();
 }
+void Release_Battery_Power_Hold(void)
+{
+    REG_RTC_PROT = PROT1;
+    Inline_RTC_UpdateContext();
+
+    REG_RTC_PROT = PROT2;
+    Inline_RTC_UpdateContext();
+
+    REG_RTC_BBPU = KEY_BBPU |
+                   AUTO |
+                   ((REG_RTC_BBPU & 0xFF) & ~PWREN);
+
+    Inline_RTC_UpdateContext();
+}

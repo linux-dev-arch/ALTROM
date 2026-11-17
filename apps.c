@@ -258,4 +258,3 @@ void snake(void){
 		watchdog_feed();
 	}
 }
-

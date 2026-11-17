@@ -24,8 +24,8 @@
 #define LCD_CLK_CONDH 0xA001011C /* bits 6:4 = LCD clock mux, 0 = MPLL/4 */
 
 /* sleep() is a busy loop of unknown length; tune this if the delays look off */
-#define LCD_MS(x) sleep((x) * 200)
-
+//#define LCD_MS(x) sleep((x) * 200)
+#define LCD_MS(x) delay_ms(x)
 #define LCD_W 240
 #define LCD_H 320
 

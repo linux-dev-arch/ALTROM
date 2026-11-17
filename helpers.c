@@ -104,13 +104,11 @@ void backlight(uint16_t level)
 
     ISINK0_CON0 = (ISINK0_CON0 & ~0x007F) | ((level << 4) | 0x9);
 }
-
 void backlight_off(void)
 {
     ISINK0_CON0 &= ~0x007F;  // Clear current level and configuration bits
     ISINKS_CON0 &= ~0x0001;  // Disable ISINK0
 }
-
 int kp_read_int(void)
 {
     int value = 0;
@@ -141,9 +139,21 @@ int kp_read_int(void)
                 KP_8 == 0 || KP_9 == 0
             );
         }
-
+	watchdog_feed();
         if (KP_OK == 0)
             return value;
-	watchdog_feed();
+	if(KP_LEFT==0)
+		return -1;
     }
+}
+void kp_blink(uint32_t cycles){
+        for(;;){
+                KP_BL_set(KP_BL_ON);
+                sleep(cycles);
+                KP_BL_set(KP_BL_OFF);
+                sleep(cycles);
+                if(KP_OK==0){
+                        break;
+                }
+        }
 }

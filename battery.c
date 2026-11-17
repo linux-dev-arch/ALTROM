@@ -128,30 +128,28 @@ void charger_stop(void)
 }
 
 /* ---- demo screen ---- */
-
-static void bat_rect(int x, int y, int w, int h, uint16_t c)
-{
-	for (int j = 0; j < h; j++)
-		for (int i = 0; i < w; i++)
-			fb_pixel(x + i, y + j, c);
-}
+//static void bat_rect(int x, int y, int w, int h, uint16_t c)
+//{
+//	for (int j = 0; j < h; j++)
+//		for (int i = 0; i < w; i++)
+//			fb_pixel(x + i, y + j, c);
+//}
 
 /* 3x5 digit font, 15 bits per digit, row-major, MSB first */
-static const uint16_t font3x5[10] = {
-	0x7B6F, 0x2C97, 0x73E7, 0x73CF, 0x5BC9, 0x79CF, 0x79EF, 0x7249, 0x7BEF, 0x7BCF
-};
+//static const uint16_t font3x5[10] = {
+//	0x7B6F, 0x2C97, 0x73E7, 0x73CF, 0x5BC9, 0x79CF, 0x79EF, 0x7249, 0x7BEF, 0x7BCF
+//};
 
-static void draw_digit(int x, int y, int d, int s, uint16_t c)
-{
-	uint16_t g = font3x5[d];
-
-	for (int r = 0; r < 5; r++)
-		for (int k = 0; k < 3; k++)
+//static void draw_digit(int x, int y, int d, int s, uint16_t c)
+//{
+//	uint16_t g = font3x5[d];
+//
+//	for (int r = 0; r < 5; r++)
+/*		for (int k = 0; k < 3; k++)
 			if (g & (1 << (14 - (r * 3 + k))))
 				bat_rect(x + k * s, y + r * s, s, s, c);
 }
-
-/* print n with at least `digits` digits (leading zeros dropped) */
+print n with at least `digits` digits (leading zeros dropped) 
 static void draw_number(int x, int y, uint32_t n, int s, uint16_t c)
 {
 	char buf[10];
@@ -160,37 +158,4 @@ static void draw_number(int x, int y, uint32_t n, int s, uint16_t c)
 	do { buf[len++] = n % 10; n /= 10; } while (n && len < 10);
 	for (int i = 0; i < len; i++)
 		draw_digit(x + i * (4 * s), y, buf[len - 1 - i], s, c);
-}
-
-void battery_app(void)
-{
-	battery_init();
-	charger_start();//   <- uncomment to also charge (read the warning above) */
-
-	for (;;) {
-		uint32_t mv  = battery_read_mv();
-		int      pct = battery_percent(mv);
-		int      chg = charger_connected();
-
-		fb_clear(COL_BLACK);
-
-		/* battery icon: outline, nub, fill bar */
-		bat_rect(20, 30, 124, 54, COL_WHITE);
-		bat_rect(24, 34, 116, 46, COL_BLACK);
-		bat_rect(144, 45, 8, 24, COL_WHITE);
-		uint16_t col = pct > 50 ? COL_GREEN : (pct > 20 ? 0xFFE0 : COL_RED);
-		bat_rect(26, 36, pct * 112 / 100, 42, col);
-
-		draw_number(20, 110, mv,  6, COL_WHITE);      /* mV    */
-		draw_number(20, 160, pct, 6, col);            /* %     */
-		if (chg)
-			bat_rect(20, 210, 30, 30, COL_BLUE);      /* blue square = charger plugged in */
-
-		fb_flush_rect(0, 20, LCD_W, 240);
-
-		sleep(20000);
-
-		if (KP_HASH == 0)  reboot();
-		if (KP_RIGHT == 0) break;
-	}
-}
+}*/

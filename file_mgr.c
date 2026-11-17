@@ -199,9 +199,6 @@ void file_mgr(void)
     watchdog_feed();
     for (;;) {
 	watchdog_feed();
-        if (KP_RIGHT == 0) {
-              break;
-        }
         fm_refresh();
 
         draw_string8(4, 300, "NUMBER: SELECT",
@@ -211,9 +208,11 @@ void file_mgr(void)
 
         selected = kp_read_int();
 
-        if (selected < 0 || selected >= entry_count)
+        if (selected >= entry_count)
             continue;
-
+	if (selected == -1){
+		break;
+	}
         /* Selected a directory */
         if (entries[selected].attr & FAT_ATTR_DIRECTORY) {
 
@@ -240,8 +239,12 @@ void file_mgr(void)
             fb_flush();
 
             /* Wait for exit */
-            while (KP_LEFT != 0){
+            for (;;){
 		watchdog_feed();
+		if(KP_LEFT==0){
+			delay_ms(200);
+			break;
+		}
 		if(KP_RIGHT ==0){
 			if(has_ext(entries[selected].name,"BIN")){
 				char path[128];

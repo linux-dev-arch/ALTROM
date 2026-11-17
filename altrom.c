@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdint.h>
 #include "defines.h"
 #include "watchdog.c"
@@ -15,8 +16,11 @@
 #include "battery.c"
 #include "settings.c"
 #include "apps.c"
-#include "menu.c"
 #include "bat.c"
+#include "menu.c"
+#include "rtc.h"
+#include "rtc.c"
+//#include "rtc_test.c"
 //#include "flash.c"
 //#include "flash_test.c"
 
@@ -40,6 +44,7 @@ void entry_main(void){
 	//psram_test();
 	fb_flush();
 	//file_mgr();
-	//vibr_on();
+	//RTC_Initialize();
+	//rtc_test();
         menu();
 }
